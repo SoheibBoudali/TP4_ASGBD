@@ -28,7 +28,7 @@ BEGIN
 		dbms_output.put_line('Aucune Hospitalisation');
 END;
 
-/* 2 */
+/* 2  Une fonction qui augmente le salaire de chaque infirmier */
 
 CREATE OR REPLACE PROCEDURE Augmentation_salaire AS
 	cursor cr is select * from infirmier;
@@ -54,7 +54,7 @@ END;
 
 EXECUTE Augmentation_salaire;
 
-/* 3 */ 
+/* 3 Fonction de vérification des salaires*/ 
 
 CREATE OR REPLACE FUNCTION Verife RETURN VARCHAR AS
 	cursor cr is select * from infirmier;
@@ -72,3 +72,20 @@ BEGIN
 END Verife;
 
 select Verife from dual;
+
+/* 4 Une fonction qui retourne, pour chaque spécialité donnée, le nombre de médecins affectés.*/
+CREATE OR REPLACE FUNCTION Med_Spec(Spec in VARCHAR) RETURN Number AS
+	cursor cr is select * from medecin;
+	c_rec cr%rowtype;
+	nbr_med Number;
+BEGIN
+	nbr_med:=0;
+	FOR c_rec in cr LOOP
+		IF(c_rec.SPECIALITE= Spec) THEN
+			nbr_med:=nbr_med+1;
+		END IF;
+	END LOOP;
+	RETURN nbr_med;
+END Med_Spec;
+
+select Med_Spec('ORTHOPEDISTE') from dual;
