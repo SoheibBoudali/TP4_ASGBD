@@ -51,3 +51,24 @@ BEGIN
 		UPDATE infirmier i SET salaire = new_s WHERE i.num_inf =c_rec.num_inf;
 	END LOOP;
 END;
+
+EXECUTE Augmentation_salaire;
+
+/* 3 */ 
+
+CREATE OR REPLACE FUNCTION Verife RETURN VARCHAR AS
+	cursor cr is select * from infirmier;
+	c_rec cr%rowtype;
+	CHAINE VARCHAR(40);
+BEGIN
+	CHAINE:='Vérification positive';
+	FOR c_rec in cr LOOP
+		IF(c_rec.salaire<10000 OR c_rec.salaire>30000) THEN
+			CHAINE:='Vérification négative';
+			RETURN CHAINE;
+		END IF;
+	END LOOP;
+	RETURN CHAINE;
+END Verife;
+
+select Verife from dual;
