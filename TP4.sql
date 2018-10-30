@@ -136,3 +136,9 @@ BEGIN
 		dbms_output.put_line('le service n existe pas');
 	END IF;
 END INSERT_EMP;
+
+EXECUTE insert_emp(0,'Nasser','zekraoui','DELES','05468','CAR','JOUR','50000'); /* insertion sans probleme */
+EXECUTE insert_emp(1,'Nasser','zekraoui','DELES','05468','CAR','JOUR','50000'); /* l employe existe deja */
+EXECUTE insert_emp(2,'Nasser','zekraoui','DELES','05468','XXX','JOUR','50000'); /* service n'existe pas */
+
+/* FIN */
