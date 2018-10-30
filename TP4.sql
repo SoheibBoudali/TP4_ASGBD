@@ -27,3 +27,27 @@ BEGIN
 	EXCEPTION when vide THEN
 		dbms_output.put_line('Aucune Hospitalisation');
 END;
+
+/* 2 */
+
+CREATE OR REPLACE PROCEDURE Augmentation_salaire AS
+	cursor cr is select * from infirmier;
+	c_rec cr%rowtype;
+	cursor cr1 is select * from employe;
+	c_rec1 cr1%rowtype;
+	new_s INTEGER ;
+BEGIN
+	FOR c_rec in cr LOOP
+		if (c_rec.rotation = 'NUIT') THEN
+			new_s:=c_rec.salaire+c_rec.salaire*60/100;
+		else
+			new_s:=c_rec.salaire+c_rec.salaire*50/100;
+		end if;
+		FOR c_rec1 in cr1 LOOP
+			IF(c_rec1.num_emp = c_rec.num_inf) THEN
+				dbms_output.put_line('Linfirmier '||c_rec1.nom_emp||' '||c_rec1.prenom_emp||' de rotation '||c_rec.rotation||' son ancien salaire est : ' ||c_rec.salaire||' DA et son nouveau salaire est '||new_s||' DA' );
+			END IF;
+		END LOOP;
+		UPDATE infirmier i SET salaire = new_s WHERE i.num_inf =c_rec.num_inf;
+	END LOOP;
+END;
